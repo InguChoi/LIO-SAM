@@ -1,19 +1,26 @@
 lio_sam:
 
   # Topics
-  pointCloudTopic: "points_raw"               # Point cloud data
-  imuTopic: "imu_raw"                         # IMU data
+  # pointCloudTopic: "points_raw"               # Point cloud data
+  # imuTopic: "imu_raw"                         # IMU data
+  # odomTopic: "odometry/imu"                   # IMU pre-preintegration odometry, same frequency as IMU
+  # gpsTopic: "odometry/gpsz"                   # GPS odometry topic from navsat, see module_navsat.launch file
+
+  pointCloudTopic: "velodyne_points"               # Point cloud data
+  imuTopic: "imu"                         # IMU data
   odomTopic: "odometry/imu"                   # IMU pre-preintegration odometry, same frequency as IMU
   gpsTopic: "odometry/gpsz"                   # GPS odometry topic from navsat, see module_navsat.launch file
+  # gpsTopic: "gps/fix"                   # GPS odometry topic from navsat, see module_navsat.launch file
 
   # Frames
-  lidarFrame: "base_link"
-  baselinkFrame: "base_link"
+  lidarFrame: "velodyne"
+  baselinkFrame: "base_footprint"
   odometryFrame: "odom"
+  # odometryFrame: "agv_odom"
   mapFrame: "map"
 
   # GPS Settings
-  useImuHeadingInitialization: true           # if using GPS data, set to "true"
+  useImuHeadingInitialization: false           # if using GPS data, set to "true"
   useGpsElevation: false                      # if GPS elevation is bad, set to "false"
   gpsCovThreshold: 2.0                        # m^2, threshold for using GPS data
   poseCovThreshold: 25.0                      # m^2, threshold for using GPS data
@@ -31,31 +38,57 @@ lio_sam:
   lidarMaxRange: 1000.0                       # default: 1000.0, maximum lidar range to be used
 
   # IMU Settings
-  imuAccNoise: 3.9939570888238808e-03
-  imuGyrNoise: 1.5636343949698187e-03
-  imuAccBiasN: 6.4356659353532566e-05
-  imuGyrBiasN: 3.5640318696367613e-05
-  imuGravity: 9.80511
+  # imuAccNoise: 3.9939570888238808e-03
+  # imuGyrNoise: 1.5636343949698187e-03
+  # imuAccBiasN: 6.4356659353532566e-05
+  # imuGyrBiasN: 3.5640318696367613e-05
+
+  imuAccNoise: 3.9939570888238808e-02
+  imuGyrNoise: 1.5636343949698187e-02
+  imuAccBiasN: 6.4356659353532566e-04
+  imuGyrBiasN: 3.5640318696367613e-04
+
+
+  imuGravity: 10.054754400889117
+  # imuGravity: 9.79897860566
+
   imuRPYWeight: 0.01
 
   # Extrinsics: T_lb (lidar -> imu)
-  extrinsicTrans: [0.0, 0.0, 0.0]
-  extrinsicRot: [-1, 0, 0,
+  extrinsicTrans: [-0.195, 0.0, -0.035]
+  # extrinsicTrans: [0, 0.0, -0.1]
+
+# LIO-SAM Author
+  # extrinsicRot: [-1, 0, 0,
+  #                 0, 1, 0,
+  #                 0, 0, -1]
+  # extrinsicRPY: [0, -1, 0,
+  #                1, 0, 0,
+  #                0, 0, 1]
+
+# Mando Gazebo
+  extrinsicRot: [1, 0, 0,
                   0, 1, 0,
-                  0, 0, -1]
-  extrinsicRPY: [0, -1, 0,
-                 1, 0, 0,
-                 0, 0, 1]
-  # extrinsicRot: [1, 0, 0,
-  #                 0, 1, 0,
-  #                 0, 0, 1]
-  # extrinsicRPY: [1, 0, 0,
-  #                 0, 1, 0,
-  #                 0, 0, 1]
+                  0, 0, 1]
+  extrinsicRPY: [1, 0, 0,
+                  0, 1, 0,
+                  0, 0, 1]
+
+# Scout Mini made by M2MCx
+  # extrinsicRot: [0.9970,   -0.0773,    0.0015,
+  #   0.0764,    0.9825,   -0.1698,
+  #   0.0116,    0.1694,    0.9855]
+
+  # extrinsicRPY : [0.9970,   -0.0764,   -0.0116,
+  #   0.0734,    0.9828,   -0.1694,
+  #   0.0244,    0.1681,    0.9855]
+ 
+
 
   # LOAM feature threshold
   edgeThreshold: 1.0
   surfThreshold: 0.1
+  
   edgeFeatureMinValidNum: 10
   surfFeatureMinValidNum: 100
 
